@@ -1,19 +1,15 @@
 package config
 
 import (
-	"belajar-rest-api/helper"
-	"database/sql"
-	"time"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
-func NewDB() *sql.DB {
-	db, err := sql.Open("mysql", "root:root@tcp(localhost:3306)/rest-api")
-	helper.PanicIfError(err)
+func NewDB() *gorm.DB {
 
-	db.SetMaxIdleConns(5)
-	db.SetMaxOpenConns(20)
-	db.SetConnMaxLifetime(60 * time.Minute)
-	db.SetConnMaxIdleTime(10 * time.Minute)
+	// refer https://github.com/go-sql-driver/mysql#dsn-data-source-name for details
+	dsn := "root:root@tcp(127.0.0.1:3306)/creative-code?charset=utf8mb4&parseTime=True&loc=Local"
+	db, _ := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	return db
 }
